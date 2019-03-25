@@ -5,20 +5,15 @@
 version: 2
 jobs:
   build:
+    working_directory: ~/courses_python_16
+
     docker:
-      # specify the version you desire here
-      # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
-      - image: circleci/python:3.6.1
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
-
-    working_directory: ~/repo
+      - image: circleci/python:3.6.4
 
     steps:
       - checkout
+      - run: sudo chown -R circleci:circleci /usr/local/bin
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
 
       # Download and cache dependencies
       - restore_cache:
@@ -36,7 +31,9 @@ jobs:
 
       - save_cache:
           paths:
-            - ./venv
+            - "./venv"
+            - "/usr/local/bin"
+            - "/usr/local/lib/python3.6/site-packages"
           key: v1-dependencies-{{ checksum "requirements.txt" }}
 
       # run tests!
@@ -45,12 +42,10 @@ jobs:
       # https://pytest.org
       # https://nose.readthedocs.io
       - run:
-          name: run tests
+          name: run flake
           command: |
             . venv/bin/activate
-            python manage.py test
+            flake8 ~/courses_python_16
 
-      - store_artifacts:
-          path: test-reports
-          destination: test-reports
-
+      - store_test_results:
+          path: test-results
