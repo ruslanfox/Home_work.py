@@ -1,0 +1,15 @@
+import random
+import string
+r = random.sample(string.ascii_letters, 10)
+j = ''.join(r)
+c1 = j.count(j[0])
+c2 = j.count(j[1])
+c3 = j.count(j[2])
+c4 = j.count(j[3])
+c5 = j.count(j[4])
+c6 = j.count(j[5])
+c7 = j.count(j[6])
+c8 = j.count(j[7])
+c9 = j.count(j[8])
+c10 = j.count(j[9])
+print(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10)
